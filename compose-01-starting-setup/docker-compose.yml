@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  mongodb:
+    image: 'mongo'
+    container_name: 'mongodb'
+    volumes:
+      - data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: einav
+      MONGO_INITDB_ROOT_PASSWORD: secret
+
+  backend:
+    build: ./backend
+    container_name: 'backend'
+    ports:
+    - '80:80'
+    environment:
+      MONGODB_USERNAME: einav
+      MONGODB_PASSWORD: secret
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+
+  frontend:
+      build: ./frontend
+      container_name: 'frontend'
+      ports:
+        - '3000:3000'
+      volumes:
+        - ./frontend/src:/app/src
+        - /app/node_modules
+      depends_on:
+        - backend
+      stdin_open: true
+      tty: true
+
+volumes:
+  data:
+  logs:
