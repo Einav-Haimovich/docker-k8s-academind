@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-app
+
+# Specification of the desired behavior of the deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+# Template for the pods managed by this deployment
+    spec:
+      containers:
+      - name: story
+        image: einav1206/kube-story:latest
