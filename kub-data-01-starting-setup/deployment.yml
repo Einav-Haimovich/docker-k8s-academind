@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: story-app
+  name: story-app-deployment
 
 # Specification of the desired behavior of the deployment
 spec:
@@ -13,8 +13,20 @@ spec:
     metadata:
       labels:
         app: story
-# Template for the pods managed by this deployment
     spec:
       containers:
-      - name: story
-        image: einav1206/kube-story:latest
+      - name: story-app-container
+        image: einav1206/kube-data:latest
+        volumeMounts:
+        - mountPath: /app/story
+          name: story-volume
+      volumes:
+      # - name: story-volume
+      #   emptyDir: {}
+      - name: story-volume
+        # hostPath:
+        #   path: /data
+        #   type: DirectoryOrCreate
+        persistentVolumeClaim:
+          claimName: story-pvc
+          
