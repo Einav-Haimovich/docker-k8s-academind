@@ -17,4 +17,4 @@ spec:
           image: einav1206/kube-network-users:latest
           env:
             - name: AUTH_SERVICE_SERVICE_HOST
-              value: auth-service
+              value: "auth-service.default"
